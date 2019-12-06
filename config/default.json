@@ -1,3 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://admin:admin@cluster0-18nhe.mongodb.net/portfolio"
+  "mongoURI": "mongodb+srv://admin:admin@cluster0-18nhe.mongodb.net/portfolio",
+  "jwtSecret" : "secret token"
 }
