@@ -1,8 +1,17 @@
 const { Router } = require('express');
 const router = Router();
+const auth = require('../../middleware/auth');
 
-router.get('/', (req, res) => {
-  res.send('Auth');
+const User = require('../../models/User');
+
+router.get('/', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json('Server error');
+  }
 });
 
 module.exports = router;
