@@ -24,7 +24,9 @@ router.post(
       return res.status(422).json({ errors: errors.array() });
     }
     try {
-      const user = await User.findById(req.user.id);
+      const user = await (await User.findById(req.user.id)).isSelected(
+        '-password'
+      );
       const post = new Post({
         text: req.body.text,
         name: user.name,
@@ -32,9 +34,9 @@ router.post(
         avatar: user.avatar
       });
 
-      await post.save()
+      await post.save();
 
-      res.json(post)
+      res.json(post);
     } catch (error) {
       console.error(error.message);
       res.status(500).json('Server error');
