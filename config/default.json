@@ -1,4 +1,6 @@
 {
   "mongoURI": "mongodb+srv://admin:admin@cluster0-18nhe.mongodb.net/portfolio",
-  "jwtSecret" : "secret token"
+  "jwtSecret": "secret token",
+  "clientID": "cc6f48187abe8f6cf995",
+  "clientSecret": "38d418553424115f5c6885c45fbcd21997746bf7"
 }
