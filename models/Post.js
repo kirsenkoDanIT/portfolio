@@ -18,6 +18,14 @@ const schema = new Schema({
       }
     }
   ],
+  unlikes: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    }
+  ],
   comments: [
     {
       user: {

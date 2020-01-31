@@ -98,18 +98,33 @@ router.delete('/:id', auth, async (req, res) => {
 router.put('/like/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (
-      post.likes.filter(like => like.user.toString() === req.user.id).length > 0
-    ) {
-      return res.status(400).json({ msg: 'Post already liked' });
-    }
+    if (!post) return res.status(404).json({ msg: 'Post not found' });
 
-    post.likes = [{ user: req.user.id }, ...post.likes];
+    const like = post.likes.filter(
+      like => like.user.toString() === req.user.id
+    );
+    const unlike = post.unlikes.filter(
+      like => like.user.toString() === req.user.id
+    );
+
+    if (!like.length && !unlike.length)
+      post.likes = [{ user: req.user.id }, ...post.likes];
+
+    if (unlike.length)
+      post.unlikes = post.likes.filter(
+        unlike => unlike.user.toString() !== req.user.id
+      );
+
+    if (like.length) return res.status(400).json({ msg: 'Post already liked' });
+
     await post.save();
 
     res.json(post.likes);
   } catch (error) {
     console.error(error.message);
+    if (error.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Post not found' });
+    }
     res.status(500).json('Server error');
   }
 });
@@ -117,22 +132,29 @@ router.put('/like/:id', auth, async (req, res) => {
 router.put('/unlike/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (!post) {
-      return res.status(404).json({ msg: 'Post not found' });
-    }
-    if (
-      post.likes.filter(like => like.user.toString() === req.user.id).length ===
-      0
-    ) {
-      return res.status(400).json({ msg: 'Post has not yet been liked' });
-    }
+    if (!post) return res.status(404).json({ msg: 'Post not found' });
 
-    post.likes = post.likes.filter(
-      like => like.user.toString() !== req.user.id
+    const like = post.likes.filter(
+      like => like.user.toString() === req.user.id
     );
+    const unlike = post.unlikes.filter(
+      like => like.user.toString() === req.user.id
+    );
+
+    if (!like.length && !unlike.length)
+      post.unlikes = [{ user: req.user.id }, ...post.unlikes];
+
+    if (like.length)
+      post.likes = post.likes.filter(
+        like => like.user.toString() !== req.user.id
+      );
+
+    if (unlike.length)
+      return res.status(400).json({ msg: 'Post already unliked' });
+
     await post.save();
 
-    res.json(post.likes);
+    res.json(post.unlikes);
   } catch (error) {
     console.error(error.message);
     if (error.kind === 'ObjectId') {
