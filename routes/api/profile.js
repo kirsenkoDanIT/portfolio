@@ -6,6 +6,7 @@ const config = require('config');
 const auth = require('../../middleware/auth');
 
 const Profile = require('../../models/Profile');
+const Post = require('../../models/Post');
 const User = require('../../models/User');
 
 // Get profile
@@ -143,6 +144,7 @@ router.post(
 router.delete('/', auth, async (req, res) => {
   try {
     await Profile.findOneAndDelete({ user: req.user.id });
+    await Post.deleteMany({ user: req.user.id });
     await User.findOneAndDelete({ _id: req.user.id });
 
     res.json({ msg: 'User deleted' });
@@ -314,7 +316,7 @@ router.get('/github/:username', async (req, res) => {
     const options = {
       uri: `https://api.github.com/users/${
         req.params.username
-      }/repos?per_page=5&sort=created:asc&client_id=${config.get(
+      }/repos?per_page=10&sort=created:asc&client_id=${config.get(
         'clientID'
       )}&client_secret=${config.get('clientSecret')}`,
       method: 'GET',
