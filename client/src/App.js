@@ -5,8 +5,9 @@ import { LoginForm, RegisterForm } from './components';
 
 const App = () => (
   <>
+    <Header />
     <LoginForm />
-    <RegisterForm/>
+    <RegisterForm />
   </>
 );
 
