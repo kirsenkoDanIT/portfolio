@@ -6,13 +6,21 @@ import {
     Link,
     useRouteMatch,
 } from 'react-router-dom';
-import './App.css';
 import { Header } from './commons';
 import { HomePage, LoginForm, RegisterForm, Profile } from './components';
 import { Container } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { teal } from '@material-ui/core/colors';
+import { ThemeProvider } from '@material-ui/styles';
+
+const theme = createMuiTheme({
+    palette: {
+        primary: teal,
+    },
+});
 
 const App = () => (
-    <>
+    <ThemeProvider theme={theme}>
         <Router>
             <Header />
             <Container>
@@ -24,7 +32,7 @@ const App = () => (
                 </Switch>
             </Container>
         </Router>
-    </>
+    </ThemeProvider>
 );
 
 export default App;
