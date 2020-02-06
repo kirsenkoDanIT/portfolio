@@ -6,7 +6,10 @@ export const useStyles = makeStyles({
     },
     media: {
         height: 200,
-        backgroundSize: 'cover',
+        backgroundSize: 'contain',
         backgroundPosition: 'top center',
+    },
+    img: {
+        height: '100%',
     },
 });

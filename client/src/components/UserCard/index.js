@@ -13,11 +13,13 @@ export const UserCard = () => {
 
     return (
         <Card className={classes.root}>
-            <CardMedia
-                className={classes.media}
-                image="https://24tv.ua/resources/photos/news/1200x675_DIR/201906/1171096.jpg?201906195840"
-                title="Contemplative Reptile"
-            />
+            <CardMedia align="center" className={classes.media} title="User">
+                <img
+                    alt={'user'}
+                    className={classes.img}
+                    src="https://image.flaticon.com/icons/svg/126/126486.svg"
+                />
+            </CardMedia>
             <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                     Lizard
